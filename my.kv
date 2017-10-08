@@ -1,0 +1,87 @@
+#:kivy 1.0.9
+<CButton@Button>:
+    size_hint_x:None
+    width:10
+
+
+<MainScreen>:
+    GridLayout
+        cols:1
+        rows:6  
+        padding:10 
+        spacing:0
+        Label:
+            id: Connected
+              
+            text: "Waiting..."
+        Button:
+            text: "settings"
+            on_press: root.manager.current = 'settings'     
+        Button:
+              
+            text: "desktop"
+            on_press: root.manager.current = 'desktop'       
+        Button:
+              
+            text: "play/pause"
+            on_press: app.test('p space')
+
+        Button:
+              
+            text: "fullscreen"
+            on_press: app.test('p f')
+
+        Button:
+              
+            text: "skip/next"
+            on_press: app.test('h shift n')
+
+
+<DesktopScreen>:
+    GridLayout
+        cols:1
+        rows:4    
+        GridLayout:
+            cols:2
+            size_hint_y:None
+            height:300
+            
+            TextInput:
+                id: goto
+                use_bubble:True
+                use_handles:True
+                allow_copy: True
+                allow_paste: True
+                text: "go to"
+                font_size:30
+            Button:
+                size_hint_x:None
+                width:120
+                font_size:30
+                text: "go"
+                on_press: app.goTo(root.ids.goto.text)
+
+        Button:
+            text: "click"
+        Button:
+              
+            text: "back"
+            on_press: root.manager.current = 'main'
+
+<SettingScreen>:
+    GridLayout
+        cols:1
+        rows:3    
+        TextInput:
+            id: addr
+            
+            text: root.text
+        Button:
+              
+            text: "back"
+            on_press: root.manager.current = 'main'
+        Button:
+              
+            text: "save connection"
+            on_press: root.connect(root.ids.addr.text)
+            
