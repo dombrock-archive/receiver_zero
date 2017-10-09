@@ -90,6 +90,6 @@ A full list of key commands is available here: (also found at http://pyautogui.r
 'command', 'option', 'optionleft', 'optionright']
 ```
 ### todo:
--authentication
+-Add a security layer
 
 -sanitize input
