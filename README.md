@@ -40,7 +40,7 @@ A space after the end of a command or command list is optional but it is a best 
 ```
 t welcome to the machine#p#<password>
 ```
-As instructing it to type 'welcome to the machine#p#<password>'
+As instructing it to type 'welcome to the machine#p#password'
 #### typing:
 ```
 t Here is some text to type!
