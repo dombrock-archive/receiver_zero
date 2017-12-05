@@ -2,6 +2,9 @@
 Control your computer remotely using Python3. 
 
 **NOTE: THIS SOFTWARE IS NOT AS SECURE AS IT COULD BE. IT NOW INCLUDES AN OPTIONAL SERVER PASSWORD BUT THERE IT STILL DOES NOT IMPLEMENT A SECURITY LAYER. USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
+ 
+## Now includes a pre-built windows executable (made with PyInstaller) for easy demonstration. 
+ 
 ## depends on
 pyautogui
 ```
