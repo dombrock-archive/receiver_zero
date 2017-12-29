@@ -4,7 +4,7 @@ Control your computer remotely using Python3.
 **NOTE: THIS SOFTWARE IS NOT AS SECURE AS IT COULD BE. IT NOW INCLUDES AN OPTIONAL SERVER PASSWORD BUT THERE IT STILL DOES NOT IMPLEMENT A SECURITY LAYER. USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
  
 ## Now includes a pre-built windows executable (made with PyInstaller) for easy demonstration. 
- 
+
 ## depends on
 pyautogui
 ```
@@ -97,3 +97,7 @@ A full list of key commands is available here: (also found at http://pyautogui.r
 -Add a security layer
 
 -sanitize input
+
+-Remove Password Feature
+
+-Replace with an IP whitelist (when a new user attemtps to connect it must first be approved by the server)
