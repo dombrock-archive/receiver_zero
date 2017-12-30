@@ -9,9 +9,7 @@
  ```
 Control your computer remotely using Python3. 
 
-**USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
- 
-## Now includes a pre-built windows executable (made with PyInstaller) for easy demonstration. 
+## **USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
 
 ## depends on
 pyautogui
