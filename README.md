@@ -1,12 +1,7 @@
 # receiver_zero
-```
-  _ _ ___ __ ___(_)_ _____ _ _
- | '_/ -_) _/ -_) \ V / -_) '_|
- |_| \___\__\___|_|\_/\___|_|
-  ______ _ _ ___
- |_ / -_) '_/ _ \
- /__\___|_| \___/
- ```
+
+<img src="https://github.com/matdombrock/receiver_zero/blob/master/rzss1.png?raw=true">
+
 Control your computer remotely using Python3. 
 
 ## **USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
