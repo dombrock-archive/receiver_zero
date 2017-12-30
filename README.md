@@ -2,7 +2,10 @@
 
 <img src="https://github.com/matdombrock/receiver_zero/blob/master/rzss1.png?raw=true">
 
-Control your computer remotely using Python3. 
+Control your computer remotely using Python3. Usefull for building remote apps and remote automation software. Can interface with any software, launguage or system that supports sockets.
+
+
+This software is auto authenticating, the first time that a client connects you will need physical access to the host machine to approve the IP for future connections. The whitelist is also stored an a text file for easy editing. 
 
 ## **USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
 
