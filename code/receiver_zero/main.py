@@ -108,7 +108,7 @@ class Server:
         if inp[0] == 'p' or inp[0] == 'P' or inp[0] == 'press' or inp[0] == 'PRESS':#PRESS SINGLE KEY
           PressKey(inp)
         if inp[0] == 't' or inp[0] == 'T' or inp[0] == 'type' or inp[0] == 'TYPE':#TYPE A STRING
-          TypreString(inp)
+          TypeString(inp)
         if inp[0] == 'h' or inp[0] == 'H' or inp[0] == 'hotkey' or inp[0] == 'HOTKEY':#PRESS HOTKEY COMBO
           HotKey(inp)
         if inp[0] == 'g' or inp[0] == 'G' or inp[0] == 'gotoaddr' or inp[0] == 'GOTOADDR':#GO TO WEB ADDRESS (BROWSER ONLY)
