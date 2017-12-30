@@ -5,4 +5,5 @@
 By using this software you agree to the GNU license. 
 
 Software by: Mathieu Dombrock
+
 Dombrock.Mathieu@gmail
