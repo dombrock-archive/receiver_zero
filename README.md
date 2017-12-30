@@ -1,7 +1,7 @@
 # receiver_zero
 Control your computer remotely using Python3. 
 
-**NOTE: THIS SOFTWARE IS NOT AS SECURE AS IT COULD BE. IT NOW INCLUDES AN OPTIONAL SERVER PASSWORD BUT THERE IT STILL DOES NOT IMPLEMENT A SECURITY LAYER. USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
+**USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
  
 ## Now includes a pre-built windows executable (made with PyInstaller) for easy demonstration. 
 
@@ -23,42 +23,31 @@ To test the server, you can run the example ```example/client.py``` with somethi
 python client.py
 ```
 ### commands
-receiver_zero uses a very simple syntax for it's commands.
-#### password:
-This is not a command exactly, but if you have chosen at launch to use a server password, you will need to append it to the end of every command or command list. For a single command you would do that like this:
-```
-p enter#p#<password>
-```
-With ```<password>``` being replaced by your actual password. 
+receiver_zero uses a very simple syntax for it's commands. All commands also work in UPPERCASE.
 
-The password must always be included at the END of the command or command list and anything in the command after the '#p#' sequence will be read as a password. 
-
-**NOTE: I have chosen the sequence '#p#' because I don't think it will come up often in everyday use (leading to confusing input). This might not have actually been the best choice but it is easily changeable in the code**
-
-When linking multiple commands together, the password must only be included once at the end of the command list:
+#### typing out a string:
 ```
-t hello world!&&p enter&&h ctrl c#p#<password>
+type Here is some text to type!
 ```
-A space after the end of a command or command list is optional but it is a best practice because if the server is running without a password it would understand a command like:
+or
 ```
-t welcome to the machine#p#<password>
+t Here is some more text to type!
 ```
-As instructing it to type 'welcome to the machine#p#password'
-#### typing:
+#### press a single key:
 ```
-t Here is some text to type!
-```
-#### press:
-```
-p f6
+press f6
 ```
 or
 ```
 p down
 ```
-#### hotkeys:
+#### press a key combo (hotkey):
 ```
 h ctrl c
+```
+or
+```
+hotkey ctrl v
 ```
 The hotkey command can only accept two key values at this time.
 #### multiple commands:
@@ -93,11 +82,4 @@ A full list of key commands is available here: (also found at http://pyautogui.r
 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen',
 'command', 'option', 'optionleft', 'optionright']
 ```
-### todo:
--Add a security layer
 
--sanitize input
-
--Remove Password Feature
-
--Replace with an IP whitelist (when a new user attemtps to connect it must first be approved by the server)
