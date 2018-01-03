@@ -25,12 +25,14 @@ python main.py
 
 This is your server. It will take incoming commands and execute them on your host machine. 
 
-To test the server, you can run the example ```example/client.py``` with something like:
+To test the server, you can run the example ```test_client/client.py``` with something like:
 ```
 python client.py
 ```
 ### commands
 receiver_zero uses a very simple syntax for it's commands. All commands also work in UPPERCASE.
+
+Send commands to the server in utf-8 format via a TCP Socket Connection. See the code in ```test_client/client.py``` for an example.
 
 #### typing out a string:
 ```
@@ -90,3 +92,7 @@ A full list of key commands is available here: (also found at http://pyautogui.r
 'command', 'option', 'optionleft', 'optionright']
 ```
 
+## Related Projects:
+<a href="https://github.com/matdombrock/YouTube_remote_zero-Android">(YouTube Remote Zero - Android) - YouTube Remote</a>
+ 
+<a href="https://github.com/matdombrock/TCPz-Android">(TPCz - Android) - General Use TCP client </a>
