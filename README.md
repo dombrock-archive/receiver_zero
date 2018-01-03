@@ -1,6 +1,6 @@
 # receiver_zero
 
-<img src="https://github.com/matdombrock/receiver_zero/blob/master/rzss1.png?raw=true">
+<img src="https://github.com/matdombrock/receiver_zero/blob/master/screenshots/rzss1.png?raw=true">
 
 Control your computer remotely using Python3 (Python 3.5.4). Useful for building remote apps and remote automation software. Can interface with any software, language or system that supports sockets.
 
