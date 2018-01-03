@@ -1,26 +1,5 @@
 import socket
 import pyautogui
-'''
-def get_ip_address():#make a test connection to determine our IP
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    return s.getsockname()[0]
-
-def clear_screen():
-  print('\n'*512)#clear screen
-
-def Init():
-  clear_screen()
-  print("Server Running on Local IP: ")
-  print("////////////////////////////")
-  print("///<   "+get_ip_address()+"   >///")
-  print("////////////////////////////")
-  input("Please make sure that receiver_zero is allowed through your firewall and press ENTER to continue.")
-  #wait for enter, this is really to make sure that the server doesn't run until we are sure the firewall is clear
-
-Init()
-
-'''
 
 class Server(object):
   def get_ip_address(self):#make a test connection to determine our IP
