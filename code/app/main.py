@@ -1,6 +1,6 @@
 import socket
 import pyautogui
-
+import controls
 class Server(object):
   def get_ip_address(self):#make a test connection to determine our IP
     ts = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -119,13 +119,13 @@ class Server(object):
             inp = inp.split(" ")#split into individual commands
             #print(inp[0])#left for debug
             if inp[0] == 'p' or inp[0] == 'P' or inp[0] == 'press' or inp[0] == 'PRESS':#PRESS SINGLE KEY
-              self.PressKey(inp)
+              controls.Input.PressKey(inp)
             if inp[0] == 't' or inp[0] == 'T' or inp[0] == 'type' or inp[0] == 'TYPE':#TYPE A STRING
-              self.TypeString(inp)
+              controls.Input.TypeString(inp)
             if inp[0] == 'h' or inp[0] == 'H' or inp[0] == 'hotkey' or inp[0] == 'HOTKEY':#PRESS HOTKEY COMBO
-              self.HotKey(inp)
+              controls.Input.HotKey(inp)
             if inp[0] == 'g' or inp[0] == 'G' or inp[0] == 'gotoaddr' or inp[0] == 'GOTOADDR':#GO TO WEB ADDRESS (BROWSER ONLY)
-              self.GoToAddress(inp)
+              controls.Input.GoToAddress(inp)
             if inp[0] == 'q' or inp[0] == 'Q' or inp[0] == 'quit' or inp[0] == 'QUIT':
               print("should quit now")
               quit()

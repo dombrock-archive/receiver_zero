@@ -1,5 +1,7 @@
 ## EXE (created with py2exe) provided for easy demoing
 
+**THIS BUILD DOES NTO INCLUDE THE LASTEST CHANGES BUT THEY DO NOT EFFECT OPERATION**
+
 ```whitelist.txt```&```config.txt```&```welcome_message.txt``` must all be in the same folder as the exe or it will not work
 
 To make a new exe you must have pyinstaller:
