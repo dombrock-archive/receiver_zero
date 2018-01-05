@@ -17,3 +17,9 @@ class Input(object):
 	      print("UNDERSTOOD AS>> hotkey "+inp[1]+", "+inp[2])
 	      #print("cmd1 "+inp[1]+" cmd2 "+inp[2])#left for debug
 	      pyautogui.hotkey(inp[1],inp[2])
+
+	def GoToAddress(inp):
+	    print("UNDERSTOOD AS>> go to "+inp[1])
+	    pyautogui.hotkey("f6");
+	    pyautogui.typewrite(inp[1]);
+	    pyautogui.press("enter");    
