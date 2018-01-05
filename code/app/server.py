@@ -3,10 +3,20 @@ import controls
 from multiprocessing import Pool
 import asyncio
 import pickle
+'''
+issue with whitelist will be caused from dynamic IPs
+possible solution is to only have a live whitelist by default
+each time server is run it will need to have the IP approved
+option to use a static whitelist file for setups with static IPS
+'''
 class Server(object):
   def dump_status(self, new_status):
     status= new_status
     pickle.dump( status, open( "com.p", "wb" ) )
+
+  def dump_connection(self, new_connection):
+    connection= new_connection
+    pickle.dump( connection, open( "connection.p", "wb" ) )
 
   def get_ip_address(self):#make a test connection to determine our IP
     ts = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -19,12 +29,15 @@ class Server(object):
     print('\n'*512)
 
   def ReadyServer(self,config_options):
+    IP = self.get_ip_address()
     print("\n\nServer Running on Local IP: ")
     print("////////////////////////////")
-    print(">>>"+self.get_ip_address()+"<<<")
+    print(">>>"+IP+"<<<")
     print("Server Running on Port: ")
     print(">>>"+config_options['port']+"<<<")
     print("////////////////////////////\n")
+    msg = "connection,"+IP+","+config_options['port']
+    self.dump_connection(msg)
 
   def ShowWelcomeMessage(self):
     welcomefile = open("welcome_message.txt", "r")
@@ -33,15 +46,17 @@ class Server(object):
     for line in welcomefile:
       print(line)
 
-  def LoadConfig(self):
+  def LoadConfig(self):#copy of GUI load
     config_options = {}
-    print("Loading config file...")
+    print("GUI Loading config file...")
     configfile = open("config.txt", "r")
     configfile = configfile.read()
     configfile = configfile.split("\n")
     for option in configfile:
-      option = option.split( )
-      config_options[option[0]] = option[1]
+      #make sure we are not trying to read a blank line
+      if len(option)>0:
+        option = option.split( )
+        config_options[option[0]] = option[1]
     #print(config_options)#left for easy debug
     return config_options
 
