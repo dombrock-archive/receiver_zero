@@ -1,11 +1,15 @@
+"""
+Controls the GUI
+Uses multiprocessing to create an instance of the server.py
+Interfaces with the server via com.py
+"""
 import tkinter as tk
 import tkinter.messagebox
-#from subprocess import Popen, PIPE, STDOUT
 import multiprocessing
 import time
 import pickle
 import webbrowser
-
+#LOCAL IMPORTS
 import server
 import com
 class AppGUI:
@@ -88,9 +92,8 @@ class AppGUI:
 		self.settingsWindow = None
 
 
-		
+	#MAIN WINDOW FUNCTIONS	
 	def settings_window(self):
-		#self.master.withdraw()
 		self.settingsWindow = tk.Toplevel(self.master)
 		self.settingsWindow = SettingsWindow(self.settingsWindow)
 
@@ -100,14 +103,6 @@ class AppGUI:
 
 	def help_window(self):
 		webbrowser.open_new("http://www.google.com")
-
-		'''def dump_status(self, new_status):
-		self.status_cache = pickle.load( open( "com.p", "rb" ) )
-		status= new_status
-		pickle.dump( status, open( "com.p", "wb" ) )
-	def dump_connection(self, new_connection):
-	    connection= new_connection
-	    pickle.dump( connection, open( "connection.p", "wb" ) )'''
 
 	def drag_window(self,x):#makes sure the GUI does not update while the window is being dragged		
 		if(self.lock_ui == False):
@@ -119,12 +114,6 @@ class AppGUI:
 		if(self.lock_ui == True):
 			#print("unlock gui")
 			self.lock_ui = False
-
-	'''def SaveWhitelist(self,new):
-	    whitefile = open("whitelist.txt", "a")
-	    saveData = new+"\n"
-	    whitefile.write(saveData)
-	    print("updated whitelist with: "+new)'''
 
 	def update_label(self):
 		self.master.after(1000, self.update_label)
@@ -175,19 +164,12 @@ class AppGUI:
 		self.greet_button.config(state="disabled")
 		self.settings_button.config(state="disabled")
 		self.label.config(text="testing")
-		#if __name__ == '__main__':
 		self.serv = server.Server()
-		#serv.StartServer()
 
-		pool = multiprocessing.Pool(processes=1)              # Start a worker processes.
+		pool = multiprocessing.Pool(processes=1)
 		pool.apply_async(self.serv.StartServer)
 
 		self.update_label()
-		#process = Popen(['swfdump', '/tmp/filename.swf', '-d'], stdout=PIPE, stderr=PIPE)
-		#self.label.config(text="text")
-
-		
-		
 		
 	def ServerReady(self):
 		print("server ready")
@@ -239,35 +221,10 @@ class SettingsWindow():
 		self.config_options = com.cLayer.LoadConfig()
 		self.port.delete(0, len(self.port.get()))
 		self.port.insert(0,self.config_options["port"])
-		
-	
-'''def load(self):#same as server load function
-		config_options = {}
-		print("GUI Loading config file...")
-		configfile = open("config.txt", "r")
-		configfile = configfile.read()
-		configfile = configfile.split("\n")
-		for option in configfile:
-			#make sure we are not trying to read a blank line
-			if len(option)>0:
-				option = option.split( )
-				config_options[option[0]] = option[1]
-		#print(config_options)#left for easy debug
-		return config_options
-
-
-	def save(self):
-		port_num = self.port.get()
-		self.config_options["port"] = port_num
-		configfile = open("config.txt", "w")
-		newData = ""
-		for option,value in self.config_options.items():
-			newData += option+" "+value+"\n"
-		print(newData)
-		configfile.write(newData)'''
 
 if __name__ == '__main__':
-	multiprocessing.freeze_support()#required for pyinstaller (https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing)
+	multiprocessing.freeze_support()#required for pyinstaller
+	#https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing
 	root = tk.Tk()
 	root.configure(background='#333')
 	my_gui = AppGUI(root)

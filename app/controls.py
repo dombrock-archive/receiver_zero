@@ -1,3 +1,7 @@
+"""
+Controls the actions on the host machine
+Allows the server to control the host machine with pyautogui
+"""
 import pyautogui
 class Input(object):
 	def PressKey(inp):
@@ -15,7 +19,6 @@ class Input(object):
 	      print("MISSING SECOND HOTKEY!!!")
 	    else:
 	      print("UNDERSTOOD AS>> hotkey "+inp[1]+", "+inp[2])
-	      #print("cmd1 "+inp[1]+" cmd2 "+inp[2])#left for debug
 	      pyautogui.hotkey(inp[1],inp[2])
 
 	def GoToAddress(inp):

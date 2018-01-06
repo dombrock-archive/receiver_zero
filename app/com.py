@@ -1,3 +1,8 @@
+"""
+Handles communication between the server and its multiple data points
+*should probably be split into two classes, one for com functions and one for config*
+"""
+
 import pickle
 
 class cLayer(object):
