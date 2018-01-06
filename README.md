@@ -5,7 +5,7 @@
 Control your computer remotely using Python3 (Python 3.5.4). Useful for building remote apps and remote automation software. Can interface with any software, language or system that supports sockets.
 
 
-*This software is auto authenticating, meaning the first time a new IP attempts a connection you will need physical access to the host machine to approve the IP for future connections. The whitelist is also stored an a text file for easy editing.*
+*This software is auto authenticating, meaning the first time a new IP attempts a connection you will need physical access to the host machine to approve the IP for future connections. The whitelist is also stored an a text file for easy editing. BECAUSE OF THIS, THERE IS A POTENTIAL SECURITY ISSUE IF YOUR NETWORK USES DYNAMIC IPs.*
 
 ## **GUI IS NOW AVAILABLE BUT MAY NOT BE FULLY DOCUMENTED.**
 
