@@ -7,11 +7,12 @@ import pickle
 import webbrowser
 
 import server
+import com
 class AppGUI:
 	def __init__(self, master):
 		self.status_cache = "null"#dont think this is used still
 		self.lock_ui = False
-		self.dump_status("null")
+		com.cLayer.dump_status("null")
 		print("new main window")
 		master.minsize(width=420, height=50)
 		master.maxsize(width=420, height=420)
@@ -84,24 +85,29 @@ class AppGUI:
 		)
 		self.close_button.pack(fill='x')
 
+		self.settingsWindow = None
+
 
 		
 	def settings_window(self):
 		#self.master.withdraw()
-		self.newWindow = tk.Toplevel(self.master)
-		bb = SettingsWindow(self.newWindow)
+		self.settingsWindow = tk.Toplevel(self.master)
+		self.settingsWindow = SettingsWindow(self.settingsWindow)
+
+	def close_settings_window(self):
+		if(self.settingsWindow!=None):
+			self.settingsWindow.master.destroy()
 
 	def help_window(self):
 		webbrowser.open_new("http://www.google.com")
 
-	def dump_status(self, new_status):
+		'''def dump_status(self, new_status):
 		self.status_cache = pickle.load( open( "com.p", "rb" ) )
 		status= new_status
 		pickle.dump( status, open( "com.p", "wb" ) )
 	def dump_connection(self, new_connection):
 	    connection= new_connection
-	    pickle.dump( connection, open( "connection.p", "wb" ) )
-
+	    pickle.dump( connection, open( "connection.p", "wb" ) )'''
 
 	def drag_window(self,x):#makes sure the GUI does not update while the window is being dragged		
 		if(self.lock_ui == False):
@@ -114,11 +120,11 @@ class AppGUI:
 			#print("unlock gui")
 			self.lock_ui = False
 
-	def SaveWhitelist(self,new):
+	'''def SaveWhitelist(self,new):
 	    whitefile = open("whitelist.txt", "a")
 	    saveData = new+"\n"
 	    whitefile.write(saveData)
-	    print("updated whitelist with: "+new)
+	    print("updated whitelist with: "+new)'''
 
 	def update_label(self):
 		self.master.after(1000, self.update_label)
@@ -126,18 +132,18 @@ class AppGUI:
 			return
 		#print("beep")
 		self.blink()
-		data = pickle.load( open( "com.p", "rb" ) )
-		con = pickle.load( open( "connection.p", "rb" ) )
+		data = com.cLayer.check_com()
+		con = com.cLayer.check_con()
 		#CHECK STATUS
 		data = data.split(",")
 		con = con.split(",")
 		if(con[0]=="connection"):
 			text = "IP: "+con[1]+" \nPORT: "+con[2]
 			self.connection_label.config(text=text)
-			self.dump_connection("clear")
+			com.cLayer.dump_connection("clear")
 
 		if(data[0]=="unknown device"):
-			self.dump_status("clear")
+			com.cLayer.dump_status("clear")
 			text = "UNKNOWN DEVICE: "+data[1]
 			self.label.config(text=text)
 			if tk.messagebox.askyesno("Add Device", "Add "+data[1]+" to whitelist?"):
@@ -148,10 +154,10 @@ class AppGUI:
 				text = "REFUSED: "+data[1]
 				self.label.config(text=text)
 		if(data[0]=="waiting"):
-			self.dump_status("clear")
+			com.cLayer.dump_status("clear")
 			self.label.config(text="Waiting for command...")
 		if(data[0]=="got"):
-			self.dump_status("clear")
+			com.cLayer.dump_status("clear")
 			self.label.config(text=data[1])
 		self.master.after(250, self.unblink)
 
@@ -164,6 +170,7 @@ class AppGUI:
 
 	def StartServer(self):
 		print("Starting Server")
+		self.close_settings_window()
 		self.greet_button.config(text="Running")
 		self.greet_button.config(state="disabled")
 		self.settings_button.config(state="disabled")
@@ -225,16 +232,16 @@ class SettingsWindow():
 			fg="white", 
 			bg="#333",
 			font=("Arial Black", 10, "bold"), 
-			command=self.save
+			command=lambda: com.cLayer.SaveConfig(self.config_options,self.port.get())
 		)
 		self.save.pack(fill="x")
 		#LOAD AND APPLY CONFIG
-		self.config_options = self.load()
+		self.config_options = com.cLayer.LoadConfig()
 		self.port.delete(0, len(self.port.get()))
 		self.port.insert(0,self.config_options["port"])
 		
-		
-	def load(self):#same as server load function
+	
+'''def load(self):#same as server load function
 		config_options = {}
 		print("GUI Loading config file...")
 		configfile = open("config.txt", "r")
@@ -257,7 +264,7 @@ class SettingsWindow():
 		for option,value in self.config_options.items():
 			newData += option+" "+value+"\n"
 		print(newData)
-		configfile.write(newData)
+		configfile.write(newData)'''
 
 if __name__ == '__main__':
 	multiprocessing.freeze_support()#required for pyinstaller (https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing)
