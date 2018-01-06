@@ -8,7 +8,7 @@ from multiprocessing import Pool
 import asyncio
 import pickle
 #LOCAL IMPORTS
-import com
+import cLayer
 class Server(object):
 
   def get_ip_address(self):#make a test connection to determine our IP
@@ -30,7 +30,7 @@ class Server(object):
     print(">>>"+config_options['port']+"<<<")
     print("////////////////////////////\n")
     msg = "connection,"+IP+","+config_options['port']
-    com.cLayer.dump_connection(msg)
+    cLayer.com.dump_connection(msg)
 
   def ShowWelcomeMessage(self):
     welcomefile = open("config/welcome_message.txt", "r")
@@ -51,25 +51,23 @@ class Server(object):
     return got
 
   def InitSocket(self,config_options):
+    print("init socket...")
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(('0.0.0.0', int(config_options["port"])))
     s.listen(5)
     return s
 
   def ServerLoop(self,s,whitelist,config_options):
-    print("starting server loop")
     while True:#MAIN PROGRAM LOOOP
-        print("running server loop")
-        
         connect, addr = s.accept()
         connecting_IP = str(addr).split("'")
         connecting_IP = connecting_IP[1]
         msg= "Connection Address:" + connecting_IP
         print(msg)
-        com.cLayer.dump_status(msg)
+        cLayer.com.dump_status(msg)
         if(connecting_IP not in whitelist):
           print("ip no found reloading whitelist")
-          whitelist = com.cLayer.LoadWhitelist(whitelist)
+          whitelist = cLayer.config.LoadWhitelist(whitelist)
         if (connecting_IP in whitelist) or config_options["allow_unverified_connections"] == "True":#VERIFIED
           if(config_options["allow_unverified_connections"] == "True"):
             print("\n*WARNING ALLOWING UNVERIFIED CONNECTIONS*\n")
@@ -90,30 +88,28 @@ class Server(object):
               print("should quit now")
               quit()
           self.ReturnData(got,connect,addr)
-          com.cLayer.dump_status("got,"+got)
+          cLayer.com.dump_status("got,"+got)
           print("\n")
         else:#UNVERIFIED
           self.ReturnData("UNKNOWN DEVICE. CHECK SERVER SOFTWARE.",connect,addr)
-          com.cLayer.dump_status("unknown device,"+connecting_IP)
-          self.recheck_whitelist = True
+          cLayer.com.dump_status("unknown device,"+connecting_IP)
 
   def StartServer(self):
-    self.recheck_whitelist =False
-    com.cLayer.dump_status("Starting...")
+    cLayer.com.dump_status("Starting Server...")
     self.clear_screen()
-    config_options = com.cLayer.LoadConfig()
+    config_options = cLayer.config.LoadConfig()
     if config_options["display_welcome_message"] == "True":
       self.ShowWelcomeMessage()
 
     self.ReadyServer(config_options)
 
     whitelist = ["0.0.0.0"]
-    whitelist = com.cLayer.LoadWhitelist(whitelist)
+    whitelist = cLayer.config.LoadWhitelist(whitelist)
 
     s = self.InitSocket(config_options)
     
     print("\n\nWaiting for command...\n\n")
-    com.cLayer.dump_status("waiting")
+    cLayer.com.dump_status("waiting")
     self.ServerLoop(s,whitelist,config_options)
 
   def callback(self):

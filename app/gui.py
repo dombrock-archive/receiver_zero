@@ -11,13 +11,12 @@ import pickle
 import webbrowser
 #LOCAL IMPORTS
 import server
-import com
+import cLayer
 class AppGUI:
 	def __init__(self, master):
 		self.status_cache = "null"#dont think this is used still
 		self.lock_ui = False
-		com.cLayer.dump_status("null")
-		print("new main window")
+		cLayer.com.dump_status("null")
 		master.minsize(width=420, height=50)
 		master.maxsize(width=420, height=420)
 		master.title("receiver_zero")
@@ -94,6 +93,7 @@ class AppGUI:
 
 	#MAIN WINDOW FUNCTIONS	
 	def settings_window(self):
+		self.close_settings_window()#make sure we do not open multiple windows
 		self.settingsWindow = tk.Toplevel(self.master)
 		self.settingsWindow = SettingsWindow(self.settingsWindow)
 
@@ -121,32 +121,32 @@ class AppGUI:
 			return
 		#print("beep")
 		self.blink()
-		data = com.cLayer.check_com()
-		con = com.cLayer.check_con()
+		data = cLayer.com.check_com()
+		con = cLayer.com.check_con()
 		#CHECK STATUS
 		data = data.split(",")
 		con = con.split(",")
 		if(con[0]=="connection"):
 			text = "IP: "+con[1]+" \nPORT: "+con[2]
 			self.connection_label.config(text=text)
-			com.cLayer.dump_connection("clear")
+			cLayer.com.dump_connection("clear")
 
 		if(data[0]=="unknown device"):
-			com.cLayer.dump_status("clear")
+			cLayer.com.dump_status("clear")
 			text = "UNKNOWN DEVICE: "+data[1]
 			self.label.config(text=text)
 			if tk.messagebox.askyesno("Add Device", "Add "+data[1]+" to whitelist?"):
 				text = "VERIFIED: "+data[1]
-				self.SaveWhitelist(data[1])
+				cLayer.config.SaveWhitelist(data[1])
 				self.label.config(text=text)
 			else:
 				text = "REFUSED: "+data[1]
 				self.label.config(text=text)
 		if(data[0]=="waiting"):
-			com.cLayer.dump_status("clear")
+			cLayer.com.dump_status("clear")
 			self.label.config(text="Waiting for command...")
 		if(data[0]=="got"):
-			com.cLayer.dump_status("clear")
+			cLayer.com.dump_status("clear")
 			self.label.config(text=data[1])
 		self.master.after(250, self.unblink)
 
@@ -214,11 +214,11 @@ class SettingsWindow():
 			fg="white", 
 			bg="#333",
 			font=("Arial Black", 10, "bold"), 
-			command=lambda: com.cLayer.SaveConfig(self.config_options,self.port.get())
+			command=lambda: cLayer.config.SaveConfig(self.config_options,self.port.get())
 		)
 		self.save.pack(fill="x")
 		#LOAD AND APPLY CONFIG
-		self.config_options = com.cLayer.LoadConfig()
+		self.config_options = cLayer.config.LoadConfig()
 		self.port.delete(0, len(self.port.get()))
 		self.port.insert(0,self.config_options["port"])
 

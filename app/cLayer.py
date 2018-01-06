@@ -14,6 +14,13 @@ class com(object):
 		connection= new_connection
 		pickle.dump( connection, open( "com/connection.p", "wb" ) )
 
+	def check_com():
+		return pickle.load( open( "com/com.p", "rb" ) )
+
+	def check_con():
+		return pickle.load( open( "com/connection.p", "rb" ) )
+
+class config(object):
 	def SaveWhitelist(new):
 		whitefile = open("config/whitelist.txt", "a")
 		saveData = new+"\n"
@@ -30,12 +37,11 @@ class com(object):
 				whitelist.append(IP)
 		print(whitelist)
 		print("Finished loading whitelist.")
-		self.recheck_whitelist = False
 		return whitelist
 
-	def LoadConfig():#copy of GUI load
+	def LoadConfig():
 		config_options = {}
-		print("GUI Loading config file...")
+		print("Loading config file...")
 		configfile = open("config/config.txt", "r")
 		configfile = configfile.read()
 		configfile = configfile.split("\n")
@@ -55,9 +61,3 @@ class com(object):
 			newData += option+" "+value+"\n"
 		print(newData)
 		configfile.write(newData)
-
-	def check_com():
-		return pickle.load( open( "com/com.p", "rb" ) )
-
-	def check_con():
-		return pickle.load( open( "com/connection.p", "rb" ) )
