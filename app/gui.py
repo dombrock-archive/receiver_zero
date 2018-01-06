@@ -15,6 +15,7 @@ class AppGUI:
 	def __init__(self, master):
 		self.status_cache = "null"#dont think this is used still
 		self.lock_ui = False
+		self.update_rate = 1000#should be config option
 		cLayer.com.dump_status("null")
 		master.minsize(width=420, height=50)
 		master.maxsize(width=420, height=420)
@@ -105,21 +106,21 @@ class AppGUI:
 
 	def drag_window(self,x):#makes sure the GUI does not update while the window is being dragged		
 		if(self.lock_ui == False):
-			#print("lock gui")
+			print("lock gui")
 			self.lock_ui = True
-			self.master.after(250, self.stop_dragging)
+			self.master.after(300, self.stop_dragging)
 
 	def stop_dragging(self):
 		if(self.lock_ui == True):
-			#print("unlock gui")
+			print("unlock gui")
 			self.lock_ui = False
 
 	def update_label(self):
-		self.master.after(1000, self.update_label)
+		self.master.after(self.update_rate, self.update_label)#must be before lock check to ensure we don't freeze
 		if(self.lock_ui == True):
 			return
 		#print("beep")
-		self.blink()
+		self.blink(0)
 		data = cLayer.com.check_com()
 		con = cLayer.com.check_con()
 		#CHECK STATUS
@@ -147,14 +148,39 @@ class AppGUI:
 		if(data[0]=="got"):
 			cLayer.com.dump_status("clear")
 			self.label.config(text=data[1])
-		self.master.after(250, self.unblink)
+		#self.master.after(250, lambda: self.unblink(0))
 
+	def blink(self,g):
+		if(self.lock_ui == True):
+			return
+		if g < 9:
+			g=g+2
+			if g>9:
+				g=9
+			gg = str(int(g*10))
+			if len(gg)<2:
+				gg = "0"+gg
+			color = "#00"+gg+"00"
+			self.blinker.config(bg=color)
+			rate = int((self.update_rate / 10)/2)
+			self.master.after(rate, lambda: self.blink(g))
+		else:
+			self.unblink(9)	
 
-	def blink(self):
-		self.blinker.config(bg="limegreen")
-
-	def unblink(self):
-		self.blinker.config(bg="skyblue")
+	def unblink(self,g):
+		if(self.lock_ui == True):
+			return
+		if g > 0:
+			g=g-2
+			if g<0:
+				g=0
+			gg = str(int(g*10))
+			if len(gg)<2:
+				gg = "0"+gg
+			color = "#00"+gg+"00"
+			self.blinker.config(bg=color)
+			rate = int((self.update_rate / 10)/2)
+			self.master.after(rate, lambda: self.unblink(g))
 
 	def StartServer(self):
 		print("Starting Server")
