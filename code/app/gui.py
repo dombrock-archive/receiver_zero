@@ -1,17 +1,18 @@
 import tkinter as tk
 import tkinter.messagebox
-from subprocess import Popen, PIPE, STDOUT
-import server
-from multiprocessing import Pool
+#from subprocess import Popen, PIPE, STDOUT
+import multiprocessing
 import time
 import pickle
 import webbrowser
+
+import server
 class AppGUI:
 	def __init__(self, master):
 		self.status_cache = "null"#dont think this is used still
 		self.lock_ui = False
 		self.dump_status("null")
-		#print("new window")
+		print("new main window")
 		master.minsize(width=420, height=50)
 		master.maxsize(width=420, height=420)
 		master.title("receiver_zero")
@@ -163,17 +164,21 @@ class AppGUI:
 
 	def StartServer(self):
 		print("Starting Server")
-		self.greet_button.config(text="running")
+		self.greet_button.config(text="Running")
 		self.greet_button.config(state="disabled")
+		self.settings_button.config(state="disabled")
 		self.label.config(text="testing")
 		#if __name__ == '__main__':
 		self.serv = server.Server()
 		#serv.StartServer()
-		pool = Pool(processes=1)              # Start a worker processes.
-		pool.apply_async(self.serv.StartServer)
-		self.update_label()
 
+		pool = multiprocessing.Pool(processes=1)              # Start a worker processes.
+		pool.apply_async(self.serv.StartServer)
+
+		self.update_label()
+		#process = Popen(['swfdump', '/tmp/filename.swf', '-d'], stdout=PIPE, stderr=PIPE)
 		#self.label.config(text="text")
+
 		
 		
 		
@@ -194,7 +199,8 @@ class SettingsWindow():
 
 		self.settings_label = tk.Label(self.master,
 			text="SETTINGS",
-			fg="white", 
+			fg="white",
+			font=("Arial Black", 10, "bold"), 
 			bg="purple"
 		)
 		self.settings_label.pack(fill="x")
@@ -202,12 +208,15 @@ class SettingsWindow():
 		self.port_label = tk.Label(self.master,
 			text="PORT:",
 			fg="white", 
+			font=("Arial Black", 10, "bold"), 
 			bg="#333"
 		)
 		self.port_label.pack(fill="x")
 		self.port = tk.Entry(self.master,
 			fg="white", 
-			bg="dimgrey"
+			bg="dimgrey",
+			justify="center",
+			font=("Arial Black", 10, "bold")
 		)
 		self.port.pack(fill="x")
 
@@ -215,6 +224,7 @@ class SettingsWindow():
 			text="Save", 
 			fg="white", 
 			bg="#333",
+			font=("Arial Black", 10, "bold"), 
 			command=self.save
 		)
 		self.save.pack(fill="x")
@@ -250,6 +260,7 @@ class SettingsWindow():
 		configfile.write(newData)
 
 if __name__ == '__main__':
+	multiprocessing.freeze_support()#required for pyinstaller (https://github.com/pyinstaller/pyinstaller/wiki/Recipe-Multiprocessing)
 	root = tk.Tk()
 	root.configure(background='#333')
 	my_gui = AppGUI(root)
