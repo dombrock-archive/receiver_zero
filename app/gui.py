@@ -6,7 +6,6 @@ Interfaces with the server via com.py
 import tkinter as tk
 import tkinter.messagebox
 import multiprocessing
-import time
 import pickle
 import webbrowser
 #LOCAL IMPORTS
@@ -102,7 +101,7 @@ class AppGUI:
 			self.settingsWindow.master.destroy()
 
 	def help_window(self):
-		webbrowser.open_new("http://www.google.com")
+		webbrowser.open_new("https://github.com/matdombrock/receiver_zero")
 
 	def drag_window(self,x):#makes sure the GUI does not update while the window is being dragged		
 		if(self.lock_ui == False):

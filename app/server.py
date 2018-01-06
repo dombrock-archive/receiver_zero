@@ -3,12 +3,11 @@ The main server software
 Receives connections via a TCP socket and executes commands via controls.py
 """
 import socket
-import controls
 from multiprocessing import Pool
-import asyncio
 import pickle
 #LOCAL IMPORTS
 import cLayer
+import controls
 class Server(object):
 
   def get_ip_address(self):#make a test connection to determine our IP
