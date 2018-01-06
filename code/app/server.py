@@ -1,7 +1,23 @@
 import socket
-import pyautogui
 import controls
+from multiprocessing import Pool
+import asyncio
+import pickle
+'''
+issue with whitelist will be caused from dynamic IPs
+possible solution is to only have a live whitelist by default
+each time server is run it will need to have the IP approved
+option to use a static whitelist file for setups with static IPS
+'''
 class Server(object):
+  def dump_status(self, new_status):
+    status= new_status
+    pickle.dump( status, open( "com.p", "wb" ) )
+
+  def dump_connection(self, new_connection):
+    connection= new_connection
+    pickle.dump( connection, open( "connection.p", "wb" ) )
+
   def get_ip_address(self):#make a test connection to determine our IP
     ts = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     ts.connect(("8.8.8.8", 80))
@@ -13,15 +29,15 @@ class Server(object):
     print('\n'*512)
 
   def ReadyServer(self,config_options):
+    IP = self.get_ip_address()
     print("\n\nServer Running on Local IP: ")
     print("////////////////////////////")
-    print(">>>"+self.get_ip_address()+"<<<")
+    print(">>>"+IP+"<<<")
     print("Server Running on Port: ")
     print(">>>"+config_options['port']+"<<<")
     print("////////////////////////////\n")
-    input("Please make sure that receiver_zero is allowed through your firewall and press ENTER to continue.\n\n")
-    #wait for enter, this is really to make sure that the server doesn't run until we are sure the firewall is clear
-
+    msg = "connection,"+IP+","+config_options['port']
+    self.dump_connection(msg)
 
   def ShowWelcomeMessage(self):
     welcomefile = open("welcome_message.txt", "r")
@@ -30,15 +46,17 @@ class Server(object):
     for line in welcomefile:
       print(line)
 
-  def LoadConfig(self):
+  def LoadConfig(self):#copy of GUI load
     config_options = {}
-    print("Loading config file...")
+    print("GUI Loading config file...")
     configfile = open("config.txt", "r")
     configfile = configfile.read()
     configfile = configfile.split("\n")
     for option in configfile:
-      option = option.split( )
-      config_options[option[0]] = option[1]
+      #make sure we are not trying to read a blank line
+      if len(option)>0:
+        option = option.split( )
+        config_options[option[0]] = option[1]
     #print(config_options)#left for easy debug
     return config_options
 
@@ -52,6 +70,7 @@ class Server(object):
         whitelist.append(IP)
     print(whitelist)
     print("Finished loading whitelist.")
+    self.recheck_whitelist = False
     return whitelist
 
   def SaveWhitelist(self,whitelist):
@@ -79,13 +98,20 @@ class Server(object):
     s.listen(5)
     return s
 
-  def MainLoop(self,s,whitelist,config_options):
-     while True:#MAIN PROGRAM LOOOP
+  def ServerLoop(self,s,whitelist,config_options):
+    print("starting server loop")
+    while True:#MAIN PROGRAM LOOOP
+        print("running server loop")
+        
         connect, addr = s.accept()
         connecting_IP = str(addr).split("'")
         connecting_IP = connecting_IP[1]
-        print("Connection Address:" + connecting_IP)
-
+        msg= "Connection Address:" + connecting_IP
+        print(msg)
+        self.dump_status(msg)
+        if(connecting_IP not in whitelist):
+          print("ip no found reloading whitelist")
+          whitelist = self.LoadWhitelist(whitelist)
         if (connecting_IP in whitelist) or config_options["allow_unverified_connections"] == "True":#VERIFIED
           if(config_options["allow_unverified_connections"] == "True"):
             print("\n*WARNING ALLOWING UNVERIFIED CONNECTIONS*\n")
@@ -106,9 +132,14 @@ class Server(object):
               print("should quit now")
               quit()
           self.ReturnData(got,connect,addr)
+          self.dump_status("got,"+got)
           print("\n")
         else:#UNVERIFIED
           self.ReturnData("UNKNOWN DEVICE. CHECK SERVER SOFTWARE.",connect,addr)
+          self.dump_status("unknown device,"+connecting_IP)
+          self.recheck_whitelist = True
+          #REMOVED WHITELIST ABILITY FROM SERVER
+          '''
           verify = input("Would you like to white list this address? (Type YES to approve)\n")
           verify = verify.lower()
           if(verify == "yes"):
@@ -119,12 +150,14 @@ class Server(object):
             self.SaveWhitelist(whitelist)
           else:
             print("ACCESS DENIED FOR: "+connecting_IP)
-            print("If this was a mistake please try again.") 
+            print("If this was a mistake please try again.")
+          '''
 
   def StartServer(self):
+    self.recheck_whitelist =False
+    self.dump_status("Starting...")
     self.clear_screen()
     config_options = self.LoadConfig()
-
     if config_options["display_welcome_message"] == "True":
       self.ShowWelcomeMessage()
 
@@ -136,11 +169,19 @@ class Server(object):
     s = self.InitSocket(config_options)
     
     print("\n\nWaiting for command...\n\n")
-    self.MainLoop(s,whitelist,config_options)
+    self.dump_status("waiting")
+    #if __name__ == '__main__':
+    #pool2 = Pool(processes=1)              # Start a worker processes.
+    #pool2.apply_async(self.ServerLoop,[s,whitelist,config_options] ,self.callback) 
+    self.ServerLoop(s,whitelist,config_options)
+    #loop = asyncio.get_event_loop()
+
+  def callback(self):
+    print("callback")
+    
 
     
 
    
     
-serv = Server()
-serv.StartServer()
+
