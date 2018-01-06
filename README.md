@@ -5,8 +5,9 @@
 Control your computer remotely using Python3 (Python 3.5.4). Useful for building remote apps and remote automation software. Can interface with any software, language or system that supports sockets.
 
 
-*This software is auto authenticating, meaning the first time a new IP attempts a connection you will need physical access to the host machine to approve the IP for future connections. The whitelist is also stored an a text file for easy editing.*
+*This software is auto authenticating, meaning the first time a new IP attempts a connection you will need physical access to the host machine to approve the IP for future connections. The whitelist is also stored an a text file for easy editing. BECAUSE OF THIS, THERE IS A POTENTIAL SECURITY ISSUE IF YOUR NETWORK USES DYNAMIC IPs.*
 
+## **GUI IS NOW AVAILABLE BUT MAY NOT BE FULLY DOCUMENTED.**
 
 ## **USE CAUTION WHEN OPERATING THIS SOFTWARE ON NETWORKS THAT YOU DO NOT TRUST OR CONTROL.**
 
@@ -16,14 +17,23 @@ pyautogui
 pip install pyautogui
 ```
 
+Building the software to an exe requires pyinstaller
+```
+pip install pyinstaller
+```
 ## usage
-Run ```app/main.py``` with something like:
+### GUI
+Run ```app/gui.py``` with something like:
 ```
-python main.py
+python gui.py
 ```
-```whitelist.txt```&```config.txt```&```welcome_message.txt``` must all be in the same folder as ```main.py``` or it will not work.
-
-This is your server. It will take incoming commands and execute them on your host machine. 
+Click on the "Start" button to start the server.
+### CLI
+Run ```app/cli.py``` with something like:
+```
+python cli.py
+```
+The server takes incoming commands and executes them on your host machine using pyautogui. 
 
 To test the server, you can run the example ```test_client/client.py``` with something like:
 ```

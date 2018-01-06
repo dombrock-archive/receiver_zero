@@ -1,3 +1,0 @@
-port 3333
-allow_unverified_connections False
-display_welcome_message True
