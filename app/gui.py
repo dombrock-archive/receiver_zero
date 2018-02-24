@@ -11,6 +11,8 @@ import webbrowser
 #LOCAL IMPORTS
 import server
 import cLayer
+
+
 class AppGUI:
 	def __init__(self, master):
 		self.status_cache = "null"#dont think this is used still
@@ -203,6 +205,7 @@ class SettingsWindow():
 	
 	def __init__(self, master):
 		self.master = master
+		self.allow_unverified = tk.IntVar()
 		master.minsize(width=420, height=420)
 		master.maxsize(width=666, height=666)
 		master.title("r_z - Settings")
@@ -234,12 +237,31 @@ class SettingsWindow():
 		)
 		self.port.pack(fill="x")
 
+		#new
+		self.unverified_label = tk.Label(self.master,
+			text="Allow Unverified Connections:",
+			fg="white", 
+			font=("Arial Black", 10, "bold"), 
+			bg="#333"
+		)
+		self.unverified_label.pack()
+		self.unverified_switch = tk.Checkbutton(self.master,
+			fg="white", 
+			bg="dimgrey",
+			selectcolor="black",
+			onvalue=True, 
+			offvalue=False,
+			variable=self.allow_unverified
+		)
+		self.unverified_switch.pack()
+		#new
+
 		self.save = tk.Button(self.master, 
 			text="Save", 
 			fg="white", 
 			bg="#333",
 			font=("Arial Black", 10, "bold"), 
-			command=lambda: cLayer.config.SaveConfig(self.config_options,self.port.get())
+			command=lambda: cLayer.config.SaveConfig(self.config_options,self.port.get(), self.allow_unverified.get())
 		)
 		self.save.pack(fill="x")
 		#LOAD AND APPLY CONFIG

@@ -1,6 +1,5 @@
 """
 Handles communication between the server and its multiple data points
-*should probably be split into two classes, one for com functions and one for config*
 """
 
 import pickle
@@ -53,8 +52,9 @@ class config(object):
 		#print(config_options)#left for easy debug
 		return config_options
 
-	def SaveConfig(config_options,port_num):
+	def SaveConfig(config_options,port_num, allow_unverified):
 		config_options["port"] = port_num
+		config_options["allow_unverified_connections"] = str(bool(allow_unverified))
 		configfile = open("config/config.txt", "w")
 		newData = ""
 		for option,value in config_options.items():
