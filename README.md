@@ -23,15 +23,19 @@ pip install pyinstaller
 ```
 ## usage
 ### GUI
-Run ```app/gui.py``` with something like:
+Install tkinter with something like:
 ```
-python gui.py
+sudo apt install python3-tk
+```
+Then run ```app/gui.py``` with something like:
+```
+python3 gui.py
 ```
 Click on the "Start" button to start the server.
 ### CLI
 Run ```app/cli.py``` with something like:
 ```
-python cli.py
+python3 cli.py
 ```
 The server takes incoming commands and executes them on your host machine using pyautogui. 
 
